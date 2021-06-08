@@ -18,7 +18,7 @@
 `manage.py`, `apps.py`, `admin.py`, `README.md`, `requirements.txt`
 
 ```
-├── README.md
+│
 ├── app_home  — Приложение, отвечающее за базовую и главную страницу
 │   ├── addons_for_views.py  — Доп. функции и классы для отображения страниц
 │   ├── static  — Основные статические файлы (базовые)
