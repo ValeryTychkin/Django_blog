@@ -1,0 +1,84 @@
+{% extends 'main_base.html' %}
+
+{% block body %}
+    <div style="height: 1rem;"></div>
+    <div align="center" class="container">
+        <div class="card text-center mb-4 my-3" style="width: 55rem;">
+            {% if request.user.is_authenticated %}
+                <div class="card-header pb-0"><h4>Создание Поста</h4></div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="mb-3" style="max-width: 25rem; margin-left: auto; margin-right: auto;">
+                                <label for="formFileMultiple" class="form-label">Загрузка фотографий</label>
+                                {{ main_form.photos }}
+                            </div>
+                            <div class="form-floating" style="max-width: 48rem; margin-left: auto; margin-right: auto;">
+                                {{ main_form.text }}
+                                <label for="floatingTextarea">Текст Поста</label>
+                            </div>
+                            <input type="submit" name="action" value="main" id="main_sub" hidden>
+                        </form>
+                    </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col text-center">
+                            <button class="btn btn-lg btn-outline-dark px-2 py-1" style="font-size: 0.8rem;" onclick="document.getElementById('main_sub').click()">
+                                <span class="fs-6">Загрузить Пост</span>
+                            </button>
+                        </div>
+                        <div class="col text-end my-auto">
+                            <button class="btn btn-sm btn-outline-secondary" style="font-size: 0.8rem;" data-bs-toggle="modal" data-bs-target="#Modal_LogIn">
+                                Загрузить посты файлом «CSV»
+                            </button>
+                        </div>
+                        <div class="modal fade" id="Modal_LogIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                                <div class="post-photo-fs-modal">
+                                    <div class="modal-dialog modal-dialog-centered post-photo-fs-modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body py-3 px-4 text-center">
+                                                <div class="border border-2 rounded bg-light mb-3 p-2">
+                                                    <div class="text-start m-2"><kbd style="opacity: 0.75;">Пример</kbd></div>
+                                                    <table class="table table-striped table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">
+                                                                    <div style="opacity: 0.35">Текст Поста</div>
+                                                                    <kbd>Текст</kbd>
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <div style="opacity: 0.35">Дата публикации</div>
+                                                                    <kbd>18-05-2021</kbd>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="mb-3" style="margin-left: auto; margin-right: auto;">
+                                                    {{ csv_form.csv_file }}
+                                                </div>
+                                                <button type="submit" name="action" value="csv" class="btn btn-sm btn-outline-secondary" style="margin-right: 1.2rem;">Загрузить</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <svg class="bd-placeholder-img card-img mb-4 border" width="100%" height="350" role="img" focusable="false">
+                        <rect width="100%" height="100%" fill="#eeeeee"></rect>
+                        <foreignObject x="30%" y="40%" width="350" height="160">
+                            <span class="fs-5">Вам необходимо войти для создания Поста</span>
+                        </foreignObject>
+                    </svg>
+                </div>
+                <div class="card-footer"></div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'main_base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="container align-content-center">
+        <div class="card mt-4-5">
+            <div class="card-footer border-bottom post-card-author">
+                {{ obj_post.obj_model.author_profile.user.first_name }} {{ obj_post.obj_model.author_profile.user.last_name }}
+            </div>
+            <div class="card-body">
+                {% if obj_post.have_photo %}
+                    <div class="row m-auto w-auto mb-5">
+                        {% for photo in obj_post.photos_list%}
+                            <button class="post-card-photo col-md-6 m-2 img-thumbnail post-photo post-photo-list" style="background-image: url({{ photo.1.url }})" data-bs-toggle="modal" data-bs-target="#Modal_{{ photo.0 }}">
+                            </button>
+                            <div class="modal fade" id="Modal_{{ photo.0 }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="post-photo-fs-modal">
+                                    <div class="modal-dialog modal-dialog-centered post-photo-fs-modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body px-2 pb-2 pt-1">
+                                                <div><button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                                                <img class="post-photo-fs-modal-img" src="{{ photo.1.url }}" alt="photo_{{ photo.0 }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <pre class="card-text post-card-text mt-4 px-5 py-4 fst-normal fs-5">
+                    {{ obj_post.obj_model.text }}</pre>
+            </div>
+            <div class="card-footer row m-0">
+                <div class="col" style="padding-left: 3.5rem;">
+                    <div class="post-like">
+                        {% if request.user.is_authenticated %}
+                            {% if user.id not in users_like_list %}
+                                <form action="{% url 'post page' obj_post.obj_model.id %}" method="post">{% csrf_token %}
+                                    <div class="post-like-icon" style="background-image: url({% static 'img/app_users/like_heart.png' %});">
+                                        <button type="submit" class="post-like-button" name="action" value="add"></button>
+                                    </div>
+                                    <span class="post-like-num">{{ obj_post.obj_model.like_counter }}</span>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'post page' obj_post.obj_model.id %}" method="post">{% csrf_token %}
+                                    <div class="post-liked-icon" style="background-image: url({% static 'img/app_users/like_heart.png' %});">
+                                        <button type="submit" class="post-like-button" name="action" value="del"></button>
+                                    </div>
+                                    <span class="post-like-num">{{ obj_post.obj_model.like_counter }}</span>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <div class="post-like-icon" style="background-image: url({% static 'img/app_users/like_heart.png' %});">
+                            <button class="post-like-button" data-bs-toggle="modal" data-bs-target="#Modal_LogIn"></button>
+                            </div>
+                            <span class="post-like-num">{{ obj_post.obj_model.like_counter }}</span>
+                            <div class="modal fade" id="Modal_LogIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <form method="post" action="{% url 'log-in/out process' %}">{% csrf_token %}
+                                    <div class="post-photo-fs-modal">
+                                        <div class="modal-dialog modal-dialog-centered post-photo-fs-modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body py-3 px-4 text-center">
+                                                    <h3 class="mb-4">Вам необходимо войти</h3>
+                                                    {% if messages %}
+                                                        {% for message in messages %}
+                                                            <div><span class="dropdown-item-text mx-2" style="color: #050505; background-color: #e98b8b; border-radius: 10px;">{{ message }}</span></div>
+                                                        {% endfor %}
+                                                        <div style="height: 0.5rem;"></div>
+                                                    {% endif %}
+                                                    <div class="px-2 py-1">{{ login_form.username }}</div>
+                                                    <div class="px-2 py-1">{{ login_form.password }}</div>
+                                                    <div style="height: 0.8rem;"></div>
+                                                    <button type="submit" name="action" value="login" class="btn btn-sm btn-outline-secondary" style="margin-right: 1.2rem;">Войти</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col post-card-publication-date">
+                    <span style="height: 100%; vertical-align: middle;">
+                        {{ obj_post.obj_model.publication_date }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

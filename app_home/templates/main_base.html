@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link href="{% static 'css/bootstrap.css' %}"
+          rel="stylesheet">
+    <link href="{% static 'css/blog.css' %}"
+          rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+            <div class="col-md-3 mb-md-0" style="flex: 0 0 auto; max-width: 25%;"></div>
+            <a class="col-md-auto blog-header-logo text-dark px-4" href="{% url 'home page' %}" style="white-space: pre;">Large Posts</a>
+            <div class="col-md-3 text-end" style="padding-right: 1.2rem; min-width: 15rem;">
+                {% if not request.user.is_authenticated %}
+                    <form method="post" action="{% url 'log-in/out process' %}">{% csrf_token %}
+                        <div class="dropdown d-inline">
+                            <button type="button" class="btn btn-sm btn-outline-dark" style="margin-right: 1.2rem;" data-bs-toggle="dropdown" aria-expanded="false">Вход</button>
+                            <ul class="dropdown-menu dropdown-menu-end text-center" style="width: 15rem;">
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <li><span class="dropdown-item-text mx-2" style="color: #050505; background-color: #e98b8b; border-radius: 10px;">{{ message }}</span></li>
+                                    {% endfor %}
+                                {% endif %}
+                                <li class="px-2 py-1">{{ login_form.username }}</li>
+                                <li class="px-2 py-1">{{ login_form.password }}</li>
+                                <li class="mt-1"><button type="submit" name="action" value="login" class="btn btn-sm btn-outline-dark" style="margin-right: 1.2rem;">Войти</button></li>
+                            </ul>
+                        </div>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'sign-up' %}">Регистрация</a>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'log-in/out process' %}">{% csrf_token %}
+                        <a class="btn btn-sm btn-outline-dark" style="margin-right: 1.2rem;" href="{% url 'user' user.id %}">{{ user.first_name.0 }}. {{ user.last_name }}</a>
+                        <button type="submit" name="action" value="logout" class="btn btn-sm btn-outline-secondary">Выход</button>
+                    </form>
+                {% endif %}
+            </div>
+        </header>
+        <ui class="nav col-md-auto mb-2 justify-content-center">
+            <li>
+                <a class="p-2 link-secondary mx-3" href="{% url 'posts list' 1 %}">Посты</a>
+            </li>
+            <li>
+                <a class="p-2 link-secondary mx-3" href="{% url 'create post' %}">Написать пост</a>
+            </li>
+            <li>
+                <a class="p-2 link-secondary mx-3" href="{% url 'users list' 1 %}">Пользователи</a>
+            </li>
+        </ui>
+    </div>
+    {% block body %}
+    {% endblock %}
+    <script src="{% static 'js/blog.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+</body>
+</html>

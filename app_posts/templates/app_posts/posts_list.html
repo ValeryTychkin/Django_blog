@@ -1,0 +1,13 @@
+{% extends 'main_base.html' %}
+
+{% block body %}
+    <div style="height: 3.5rem;"></div>
+    {{ mini_posts_list }}
+    <div style="position: fixed; bottom: 0; width: 100%; text-align: center; margin-bottom: 1.5rem;">
+        <div class="btn-group me-2" role="group" aria-label="Second group">
+            {% for num in page_nums_list %}
+                <a href="{% url 'posts list' num %}" class="btn btn-secondary{% if num == page_num %}disable" style="border: 1px solid #6c757d;{% endif %}" >{{ num }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

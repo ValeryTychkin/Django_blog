@@ -1,0 +1,55 @@
+{% extends 'main_base.html' %}
+{% load static %}
+
+{% block body %}
+    <div align="center" class="container">
+        <div class="card mt-4-5" style="background: #fcfcfc; max-width: 35rem;">
+            {% if user.id == user_obj.user.id %}
+                <div class="card-body pb-4">
+                    <h3 class="card-title">{% if user_obj.user.is_superuser %}Администратор{% else %}Пользователь{% endif %}</h3>
+                    <div class="mt-3" style="max-width: 25rem;">
+                            <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                                <div id="avatar_preview" class="self-user-preview-avatar my-4" style="background-image: url({{ user_obj.avatar.url }})">
+                                    {{ user_form.avatar }}
+                                </div>
+                                <h4 class="mb-3">{{ user_obj.user.username }}</h4>
+                                <div class="mb-4">
+                                    <label>
+                                        {{ user_form.f_name }}
+                                    </label>
+                                    <label>
+                                        {{ user_form.l_name }}
+                                    </label>
+                                </div>
+                                <div class="form-floating my-3">
+                                    {{ user_form.about }}
+                                    <label for="aboutTextarea">О себе</label>
+                                </div>
+                                <div class="user-like">
+                                    <div class="user-like-icon" style="background-image: url({% static 'img/app_users/like_heart.png' %});"></div>
+                                    <span class="user-like-num">{{ user_obj.like_counter }}</span>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-2" style="opacity: 75%">Изменить</button>
+                            </form>
+            {% else %}
+                    <div class="card-body">
+                        <h3 class="card-title">{% if user_obj.user.is_superuser %}Администратор{% else %}Пользователь{% endif %}</h3>
+                        <div class="mt-3" style="max-width: 25rem;">
+                            <div id="avatar_preview" class="user-preview-avatar my-4" style="background-image: url({{ user_obj.avatar.url }});"></div>
+                            <h5 class="mb-3">{{ user_obj.user.username }}</h5>
+                            <h3 class="mb-4 align-items-center">{{ user_obj.user.first_name }} {{ user_obj.user.last_name }}</h3>
+                            {% if user_obj.about %}
+                                <span style="font-size: 0.9rem; color: #6f7275; float: left;">О себе</span><br>
+                                <p style="float: left; text-align: justify;">{{ user_obj.about }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="user-like">
+                        <div class="user-like-icon" style="background-image: url({% static 'img/app_users/like_heart.png' %});"></div>
+                        <span class="user-like-num">{{ user_obj.like_counter }}</span>
+                    </div>
+                <div style="height: 0.8rem"></div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row mb-2">
+        {% for obj in objs_list %}
+            <div class="col-md-6">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 mini-post-shadow h-md-250 position-relative" style="min-height: 16rem;">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <span class="d-inline-block mb-2" style="color: #bebebe">{{ obj.obj_model.author_profile.user.first_name }} {{ obj.obj_model.author_profile.user.last_name }}</span>
+                        <p class="card-text mb-auto fs-5">{{ obj.obj_model.card_text }}</p>
+                        <div class="mb-1 text-muted">{{ obj.obj_model.publication_date }}</div>
+                        <a href="{% url 'post page' obj.obj_model.id %}" class="stretched-link">Продолжить просмотр</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        {% if obj.have_photo %}
+                            <div class="post-photo" style="width:  200px; height: 100%; background-image: url({{ obj.first_photo.url }})"></div>
+                        {% else %}
+                            <div class="mini-post-author-avatar" style="background-image: url({{ obj.obj_model.author_profile.avatar.url }});"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

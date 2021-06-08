@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="container">
+    <div class="row mb-2">
+        {% for user_obj in objs_list %}
+            <div class="col-md-3">
+                <div class="text-center border rounded overflow-hidden shadow-sm pt-3" style="min-height: 23rem; position: relative;">
+                    <div class="user-mini-avatar mb-2" style="background-image: url({{ user_obj.avatar.url }});"></div>
+                    <h3 class="mb-4">{{ user_obj.user.first_name }} {{ user_obj.user.last_name }}</h3>
+                    {% if user_obj.about %}
+                        <div class="mb-2">
+                            <span class="user-mini-about-label">О себе: </span>
+                            <span>{{ user_obj.about }}</span>
+                        </div>
+                    {% endif %}
+                    <div style="position: absolute; bottom: -0.3rem; width: 100%">
+                        <div class="user-mini-like">
+                            <div class="user-mini-like-icon" style="background-image: url({% static 'img/app_users/like_heart.png' %});"></div>
+                            <span class="user-mini-like-num">{{ user_obj.like_counter }}</span>
+                        </div>
+                        <p><a class="btn btn-outline-dark"  href="{% url 'user' user_obj.user_id %}">Постмотреть профиль</a></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
