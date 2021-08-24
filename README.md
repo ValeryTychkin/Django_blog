@@ -82,4 +82,4 @@
   ___
 ## Контакты для Связи
 - __E-mail__: [valery.tychkin@gmail.com](valery.tychkin@gmail.com)  
-- __Telegram__: [@ILove1337](https://t.me/ILove1337)
+- __Telegram__: [@Kepler186f](https://t.me/Kepler186f)
